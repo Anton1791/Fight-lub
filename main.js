@@ -1,50 +1,51 @@
 
-const kitana = {
+const player1 = {
     name: 'kitana',
-    hp: '',
+    hp: '50',
     img: './image/kitana.gif',
     weapon: ['knife', 'sword', 'ax'],
-    player: 'player1',
     attack() {
-        console.log(kitana.name, + ' Fight');
+       console.log(kitana.name, + ' Fight');
     },
-}
-const scorpion = {
+  }
+const player2 = {
     name: 'scorpion',
-    hp: '',
+    hp: '80',
     img: './image/scorpion.gif',
     weapon: ['knife', 'sword', 'ax'],
-    player: 'player2',
     attack() {
-        console.log(scorpion.name, + ' Fight');
+       console.log(scorpion.name, + ' Fight');
     },
-}
-function createPlayer(play, nick) {
-    const $arenas = document.querySelector('.arenas');
-    const $players = document.createElement('div');
+  }
+function createPlayer(player, character) {
+    const $root = document.querySelector('.root .arenas');
+    const $player = document.createElement('div');
+    $player.classList = player;
+    
     const $progressbar = document.createElement('div');
-    const $character = document.createElement('div');
+    $progressbar.classList = 'progressbar';
+  
     const $life = document.createElement('div');
-    const $name = document.createElement('div');
-    const $image = document.createElement('img');
-
-    $players.className = play;
-    $progressbar.className = 'progressbar';
-    $character.className = 'character';
-    $life.className = 'life';
-    $name.className = 'name';
-    $image.className = 'image';
-    $image.src = './image/' + nick + '.gif';
-    $name.innerText = nick;
-    $life.setAttribute('style', 'width: 100%');
-
-    $players.appendChild($progressbar);
+    $life.classList = 'life';
+    $life.style.width = character.hp + '%';
     $progressbar.appendChild($life);
+  
+    const $name = document.createElement('div');
+    $name.classList = 'name';
+    $name.innerText = character.name;
     $progressbar.appendChild($name);
-    $players.appendChild($character);
-    $character.appendChild($image);
-    $arenas.appendChild($players);
-
-}
-createPlayer(kitana.player, kitana.name);
-createPlayer(scorpion.player, scorpion.name);
+  
+    const $character = document.createElement('div');
+    $character.classList = 'character';
+  
+    const $img = document.createElement('img');
+    $img.src = character.img;
+    $character.appendChild($img);
+  
+    $player.appendChild($progressbar);
+    $player.appendChild($character);
+    $root.appendChild($player);
+  };
+  
+  createPlayer('player1', player1);
+  createPlayer('player2', player2);
