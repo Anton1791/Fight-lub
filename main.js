@@ -86,7 +86,7 @@ function winner(params) {
   } else { 
     $arenas.appendChild(playerWinner(player1.name));
 } if (player1 == player2){
-  return ('draw')
+  return (' draw')
 }
 };
 
