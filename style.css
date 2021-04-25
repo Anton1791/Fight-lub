@@ -262,19 +262,18 @@ body {
     top: 1px;
 }
 
-.playerWinner {
+.reloadWrap {
     position: absolute;
-    top: 25%;
-    left: 50%;
-    font-size: 36px;
-    transform: translate(-50%, 0%);
-    text-transform: uppercase;
+    top: 10%;
     z-index: 1000;
-    color: white;
-    font-family: "Mortal Kombat 3";
+    left: 50%;
+    transform: translate(-50%, 0%);
 }
 
-.bothLost{
+.reloadWrap .button {
+    margin-top: 0;
+}
+.showTitle{
     position: absolute;
     top: 25%;
     left: 50%;
@@ -283,5 +282,5 @@ body {
     text-transform: uppercase;
     z-index: 1000;
     color: white;
-    font-family: "Mortal Kombat 3"; 
+    font-family: "Mortal Kombat 3";    
 }
