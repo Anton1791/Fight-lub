@@ -1,6 +1,2 @@
-import Game from './game.js';
-
-const game = new Game();
-
-game.start();
+import {game} from './game.js';
 game.startGame();

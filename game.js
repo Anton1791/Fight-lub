@@ -1,15 +1,15 @@
 import {getRandom, createElement} from './utils.js';
 import {generateLogs} from './genLogs.js';
-import {player1, player2} from './players.js';
 import {globalStor} from './globalStor.js';
+import {player1, player2} from './player.js'
 
 const {$formFight, HIT, ATTACK, $arenas} = globalStor;
 
-function checkPowerAttack(attack, def){
-  if (attack.hit === def.defence){
+function checkPowerAttack(attack, def, value){
+  if (attack === def){
       return 0;
   } else {
-      return attack.value;
+      return value;
   };
 };
   
@@ -78,55 +78,79 @@ function showResultText(name){
   };
   return $showTitle;
 };
-  
-function createPlayer( character) {
-  const $player = createElement('div', 'player' + character.player);
+
+function createPlayer({player, name, hp, img}){
+  const $player = createElement('div', 'player' + player);
   const $progressbar = createElement('div', 'progressbar');
   const $life = createElement('div', 'life');
   const $name = createElement('div', 'name');
   const $character = createElement('div', 'character');
   const $img = createElement('img');
-
-  $life.style.width = character.hp + '%';
-  $name.innerText = character.name;
-  $img.src = character.img;
-
+  $life.style.width = hp + '%';
+  $name.innerText = name;
+  $img.src = img;
   $progressbar.appendChild($life);
   $progressbar.appendChild($name);
   $character.appendChild($img);
 
   $player.appendChild($progressbar);
   $player.appendChild($character);
+
   return $player;
 };
-  
+
 $arenas.appendChild(createPlayer(player1));
 $arenas.appendChild(createPlayer(player2));
 
-export default class Game{
+class Game{
   constructor(){
   }
-  
-  start = () => {generateLogs('start', player1, player2)};
+
   startGame = () => {
+    class Player{
+      constructor(props){
+          this.player = props.player;
+          this.name = props.name;
+          this.hp = props.hp;
+          this.img = props.img;
+      }
+     
+      changeHP = (randomNumber) => {
+          this.hp -= randomNumber;
+          if (this.hp <= 0){
+            this.hp = 0;
+          };
+        };
+  
+      elHP = () => {
+          return document.querySelector('.player' + this.player + ' .life');
+      };
+      
+      renderHP = () => {
+      this.elHP().style.width = this.hp + '%';
+      };
+    };
+
+    generateLogs('start', player1, player2);
+
     $formFight.addEventListener('submit', function(event){
     event.preventDefault();
-    const player = playerAttack();
-    const enemy = enemyAttack();
+    const {hit, defence, value} = playerAttack();
+    const {hit: hitEnemy, defence: defEnemy, value: valEnemy} = enemyAttack();
   
-    player1.changeHP(checkPowerAttack(player, enemy));
-    player2.changeHP(checkPowerAttack(enemy, player));
+    player1.changeHP(checkPowerAttack(hit, defEnemy, value));
+    player2.changeHP(checkPowerAttack(hitEnemy, defence, valEnemy));
     player1.renderHP();
     player2.renderHP();
   
-    if (player.hit !== enemy.defence){
-      generateLogs('hit', player2, player1, player.value);
+    if (hit !== defEnemy){
+      generateLogs('hit', player2, player1, value);
     } else {
       generateLogs('defence', player2, player1, 0);
     };
   
-    if (enemy.hit !== player.defence) {
-      generateLogs('hit', player1, player2, enemy.value);
+    if (hitEnemy !== defence) {
+      generateLogs('hit', player1, player2, valEnemy);
     } else {
       generateLogs('defence', player1, player2, 0);
     };
@@ -135,3 +159,4 @@ export default class Game{
   };
 };
 
+export const game = new Game();
